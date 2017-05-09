@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+         /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+         #map {
+             height: 100%;
+         }
+         /* Optional: Makes the sample page fill the window. */
+         html, body {
+             height: 100%;
+             margin: 0;
+             padding: 0;
+         }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+		function Init() {
+			var map = new Map();
+			map.Init();
+			var dom = new DomService();
+			var flights = new FlightsCollection(map, dom);
+			flights.DrawFlights();
+		}
+		function Map()
+		{
+			var map;
+			var icon = new google.maps.MarkerImage(
+				"http://labs.lucca.fr/nfaugout/ico-plane.png",
+			);
+			return {
+				Init: function () {
+					map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 7,
+						center: new google.maps.LatLng(48.3, 2),
+						mapTypeId: 'terrain'
+					});
+				},
+				Marker: function (flight) {
+					var coords = new google.maps.LatLng(flight.Lat, flight.Long);
+					flight.marker = new google.maps.Marker({
+						position: coords,
+						map: map,
+						icon: icon
+					});
+				}
+			};
+		}
+		function FlightsCollection(map, dom) {
+			var href = '/api/flights';
+			var that = this;
+			return {
+				DrawFlights: function () {
+					return aja()
+						.url('/api/flights')
+						.on('success', function (data) {
+							for (var i = 0; i < data.length; i++) {
+								var flight = data[0];
+								new map.Marker(flight);
+								flight.UpdatePlanePosition = function () {
+									aja()
+										.url('/api/flights/' + flight.Id)
+										.on('success', function (data) {
+											var newCoords = new google.maps.LatLng(data.Lat, data.Long);
+											flight.marker.setPosition(newCoords);
+											if (data.IsPlaneFlying) {
+												setTimeout(function () { flight.UpdatePlanePosition(); }, 200);											}
+										})
+										.go();
+								}
+								flight.Start = function () {
+									return aja()
+										.method('post')
+										.url('/api/flights/' + flight.Id + '/start')
+										.on('success', function (data) {
+											setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+										})
+										.go();
+								}
+								flight.Reset = function () {
+									return aja()
+										.method('post')
+										.url('/api/flights/' + flight.Id + '/reset')
+										.on('success', function (data) {
+											setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+										})
+										.go();
+								}
+								dom.PlugStartBtn(flight);
+								dom.PlugResetBtn(flight);
+								if (flight.IsPlaneFlying) {
+									setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+								}
+							}
+						})
+						.go();
+				}
+			};
+		}
+		function DomService() {
+			return {
+				PlugStartBtn: function (flight) {
+					var elem = document.getElementById('startBtn');
+					elem.onclick = function () {
+						flight.Start();
+					}
+				},
+				PlugResetBtn: function (flight) {
+					var elem = document.getElementById('resetBtn');
+					elem.onclick = function () {
+						flight.Reset();
+					}
+				}
+			};
+		}
+    </script>
+	<script src="../../Scripts/aja.min.js">
+	</script>
+	<script src="../../Scripts/bonzo.min.js">
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6jYlPHJVDuHFSgQgznl8v6GZEtx6jLLo&callback=Init">
+	</script>
+	<div style="position: absolute; left: 10px; top: 50px;">
+		<input type="button" value="Start flight" id="startBtn" />
+		<input type="button" value="Reset flight" id="resetBtn" />
+	</div>
+</body>
+</html>
