@@ -101,6 +101,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlightsRepository.cs" />
+    <Compile Include="PlanePositionsRepository.cs" />
     <Compile Include="Storage\FlightsContext.cs" />
     <Compile Include="Storage\Mappers\AirportsMapper.cs" />
     <Compile Include="Storage\Mappers\PlanePositionsMapper.cs" />

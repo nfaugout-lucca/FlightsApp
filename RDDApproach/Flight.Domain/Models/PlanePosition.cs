@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Flights.Domain
 {
-	public class PlanePosition
+	public class PlanePosition : Entity
 	{
-		public Guid Id { get; set; }
 		public Guid PlaneId { get; set; }
 		public decimal Lat { get; set; }
 		public decimal Long { get; set; }

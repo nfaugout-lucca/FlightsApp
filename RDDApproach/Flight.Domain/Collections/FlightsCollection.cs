@@ -10,91 +10,37 @@ namespace Flights.Domain.Collections
 {
 	public class FlightsCollection
 	{
-		private Func<IStorageService> _getStorage;
+		private IRepository<Flight> _entitySource;
+		private IEventDispatcher _dispatcher;
 
-		public FlightsCollection(Func<IStorageService> getStorage)
+		public FlightsCollection(IRepository<Flight> entitySource, IEventDispatcher dispatcher)
 		{
-			_getStorage = getStorage;
-		}
-
-		public void Create(Flight flight)
-		{
-			using (var storage = _getStorage())
-			{
-				storage.Add(flight);
-				storage.Commit();
-			}
+			_entitySource = entitySource;
+			_dispatcher = dispatcher;
 		}
 
 		public IEnumerable<Flight> GetFlights()
 		{
-			using (var storage = _getStorage())
-			{
-				return storage.Set<Flight>()
-					.Include(f => f.Departure)
-					.Include(f => f.Destination)
-					.Include(f => f.Plane)
-					.Include(f => f.Plane.Positions)
-					.ToList();
-			}
-		}
-
-		private Flight GetFlightById(Guid id, IStorageService storage)
-		{
-			return storage.Set<Flight>()
-				.Include(f => f.Departure)
-				.Include(f => f.Destination)
-				.Include(f => f.Plane)
-				.Include(f => f.Plane.Positions)
-				.FirstOrDefault(f => f.Id == id);
+			return _entitySource.QueryEntities((flights) => flights.ToList());
 		}
 
 		public Flight GetFlightById(Guid id)
 		{
-			using (var storage = _getStorage())
-			{
-				return GetFlightById(id, storage);
-			}
+			return _entitySource.QueryEntities((flights) => flights.Where(f => f.Id == id).ToList()).FirstOrDefault();
 		}
 
-		public void StartFlight(Guid id)
+		public void StartFlightById(Guid id)
 		{
-			Flight flight;
+			var flight = GetFlightById(id);
 
-			using (var storage = _getStorage())
-			{
-				flight = GetFlightById(id, storage);
-				flight.DepartedAt = DateTime.Now;
-				flight.ArrivedAt = null;
-
-				storage.Commit();
-			}
-
-			new PlanesCollection(_getStorage)
-				.FlyPlaneThrough(flight.Plane, flight.Destination.Location);
-
-			using (var storage = _getStorage())
-			{
-				var freshFlight = GetFlightById(id, storage);
-				freshFlight.ArrivedAt = DateTime.Now;
-
-				storage.Commit();
-			}
+			Task.Run(() => flight.Start(_dispatcher));
 		}
 
-		public void ResetFlight(Guid id)
+		public void ResetFlightById(Guid id)
 		{
-			using (var storage = _getStorage())
-			{
-				var flight = GetFlightById(id, storage);
-				flight.DepartedAt = null;
-				flight.ArrivedAt = null;
+			var flight = GetFlightById(id);
 
-				storage.Commit();
-
-				new PlanesCollection(_getStorage)
-					.ResetPlaneLocation(flight.Plane, flight.Departure.Location);
-			}
+			flight.Reset(_dispatcher);
 		}
 	}
 }

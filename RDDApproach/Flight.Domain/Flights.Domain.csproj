@@ -62,9 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\PlanesCollection.cs" />
     <Compile Include="Collections\FlightsCollection.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventDispatcher.cs" />
     <Compile Include="Helpers\FlightRouter.cs" />
+    <Compile Include="IEventDispatcher.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="Models\Plane.cs" />
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\Entity.cs" />

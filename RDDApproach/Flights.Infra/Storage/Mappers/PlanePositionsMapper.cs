@@ -15,6 +15,7 @@ namespace Flights.Infra
             ToTable("PlanePositions");
 
 			Property(pp => pp.Id).HasColumnName("Id");
+			Ignore(pp => pp.Name);
 		}
 	}
 }

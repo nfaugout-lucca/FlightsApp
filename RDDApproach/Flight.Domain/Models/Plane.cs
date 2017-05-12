@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
+using Flights.Domain.Events;
 
 namespace Flights.Domain
 {
@@ -33,5 +34,33 @@ namespace Flights.Domain
 			Id = id;
 			Positions.Add(new PlanePosition(id, location));
 		}
-    }
+
+		internal void FlyThrough(IEventDispatcher dispatcher, GPSPoint destination)
+		{
+			var router = new FlightRouter(CurrentLocation, destination, SPEED);
+
+			for (var i = 0; i < 100; i++)
+			{
+				var position = new PlanePosition(Id, router.CurrentLocation);
+				Positions.Add(position);
+				dispatcher.RaiseEvent(new Event(EVENT_LOCATION_CHANGED, position));
+
+				Thread.Sleep(SLEEP_INTERVAL);
+
+				//After sleep router is still at the same location ?
+				//If so, means that the fly is over
+				if (router.CurrentLocation.Equals(CurrentLocation))
+				{
+					break;
+				}
+			}
+		}
+
+		internal void ResetLocation(IEventDispatcher dispatcher, GPSPoint location)
+		{
+			var position = new PlanePosition(Id, location);
+			Positions.Add(position);
+			dispatcher.RaiseEvent(new Event(EVENT_LOCATION_CHANGED, position));
+		}
+	}
 }

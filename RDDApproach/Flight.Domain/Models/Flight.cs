@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Flights.Domain.Events;
+using Newtonsoft.Json;
 using RDD.Domain;
 using SimpleInjector;
 using System;
@@ -51,6 +52,27 @@ namespace Flights.Domain
 			Plane = plane;
 			DepartedAt = departedAt;
 			ArrivedAt = arrivedAt;
+		}
+
+		public void Start(IEventDispatcher dispatcher)
+		{
+			DepartedAt = DateTime.Now;
+			ArrivedAt = null;
+			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
+
+			Plane.FlyThrough(dispatcher, Destination.Location);
+
+			ArrivedAt = DateTime.Now;
+			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
+		}
+
+		public void Reset(IEventDispatcher dispatcher)
+		{
+			DepartedAt = null;
+			ArrivedAt = null;
+			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
+
+			Plane.ResetLocation(dispatcher, Departure.Location);
 		}
 	}
 }

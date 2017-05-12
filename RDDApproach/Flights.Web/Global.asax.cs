@@ -1,4 +1,5 @@
 ﻿using Flights.Domain;
+using Flights.Domain.Events;
 using Flights.Infra;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -33,7 +34,11 @@ namespace Flights.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-			DIContainer.Register<IStorageService>(() => new EFStorageService(new FlightsContext()));
+			DIContainer.Register<IEventDispatcher>(() => new EventDispatcher(), Lifestyle.Singleton);
+
+			var dispatcher = DIContainer.GetInstance<IEventDispatcher>();
+			dispatcher.RegisterListener(Plane.EVENT_LOCATION_CHANGED, new PlanePositionsRepository().ProcessEvent);
+			dispatcher.RegisterListener(Flight.EVENT_FLIGHT_CHANGED, new FlightsRepository().ProcessEvent);
 		}
 	}
 }

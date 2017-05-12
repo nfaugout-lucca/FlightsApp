@@ -19,7 +19,8 @@ namespace Flights.Web.Controllers
 		// GET api/flights
 		public IEnumerable<Flight> Get()
 		{
-			var collection = new FlightsCollection(() => new EFStorageService(new FlightsContext()));
+			var repo = new FlightsRepository();
+			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
 			var flights = collection.GetFlights();
 
 			return flights;
@@ -28,7 +29,8 @@ namespace Flights.Web.Controllers
 		// GET api/flights/{id}
 		public Flight Get(Guid id)
 		{
-			var collection = new FlightsCollection(() => new EFStorageService(new FlightsContext()));
+			var repo = new FlightsRepository();
+			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
 			var flight = collection.GetFlightById(id);
 
 			return flight;
@@ -38,18 +40,18 @@ namespace Flights.Web.Controllers
 		[HttpPost]
         public void Start(Guid id)
         {
-			var collection = new FlightsCollection(() => new EFStorageService(new FlightsContext()));
-
-			Task.Run(() => collection.StartFlight(id));
+			var repo = new FlightsRepository();
+			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
+			collection.StartFlightById(id);
 		}
 
 		// POST api/flights/{id}/reset
 		[HttpPost]
 		public void Reset(Guid id)
 		{
-			var collection = new FlightsCollection(() => new EFStorageService(new FlightsContext()));
-
-			collection.ResetFlight(id);
+			var repo = new FlightsRepository();
+			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
+			collection.ResetFlightById(id);
 		}
 	}
 }

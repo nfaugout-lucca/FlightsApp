@@ -76,7 +76,7 @@
 										.method('post')
 										.url('/rdd/api/flights/' + flight.Id + '/start')
 										.on('success', function (data) {
-											setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+											setTimeout(function () { flight.UpdatePlanePosition(); }, 1000);
 										})
 										.go();
 								}
