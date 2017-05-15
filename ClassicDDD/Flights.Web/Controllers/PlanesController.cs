@@ -12,61 +12,61 @@ using System.Web.Http;
 
 namespace Flights.Web.Controllers
 {
-    public class FlightsController : ApiController
+    public class PlanesController : ApiController
     {
-        // GET api/flights
-        public IEnumerable<FlightDto> Get()
+        // GET api/planes
+        public IEnumerable<PlaneDto> Get()
         {
             var repo = new FlightsRepository();
             var flights = repo.GetFlights();
 
 			return flights
-				.Select(f => new FlightDto
+				.Select(f => new PlaneDto
 				{
-					Id = f.Id,
-					IsPlaneFlying = f.IsPlaneFlying,
+					Id = f.Plane.Id,
+					IsFlying = f.IsPlaneFlying,
 					Lat = f.Plane.CurrentLocation.LatCoordinate.Value,
 					Long = f.Plane.CurrentLocation.LongCoordinate.Value,
 				});
         }
 
-		// GET api/flights/{id}
-		public FlightDto Get(Guid id)
+		// GET api/planes/{id}
+		public PlaneDto Get(Guid id)
 		{
 			var repo = new FlightsRepository();
-			var flight = repo.GetFlightById(id);
+			var flight = repo.GetFlights().FirstOrDefault(f => f.Plane.Id == id);
 
-			return new FlightDto
+			return new PlaneDto
 			{
-				Id = flight.Id,
-				IsPlaneFlying = flight.IsPlaneFlying,
+				Id = flight.Plane.Id,
+				IsFlying = flight.IsPlaneFlying,
 				Lat = flight.Plane.CurrentLocation.LatCoordinate.Value,
 				Long = flight.Plane.CurrentLocation.LongCoordinate.Value,
 			};
 		}
 
-		// POST api/flights/{id}/start
+		// POST api/planes/startPlane
 		[HttpPost]
-        public void Start(Guid id)
+		public void StartPlane(Guid id)
         {
 			var repo = new FlightsRepository();
 			var flights = repo.GetFlights();
 
-			var flight = flights.FirstOrDefault(f => f.Id == id);
+			var flight = flights.FirstOrDefault(f => f.Plane.Id == id);
 			if (flight != null)
 			{
 				Task.Run(() => flight.Start(WebApiApplication.DIContainer.GetInstance<IEventDispatcher>()));
 			}
 		}
 
-		// POST api/flights/{id}/reset
+		// POST api/planes/resetPlanePosition
 		[HttpPost]
-		public void Reset(Guid id)
+		public void ResetPlanePosition(Guid id)
 		{
 			var repo = new FlightsRepository();
 			var flights = repo.GetFlights();
 
-			var flight = flights.FirstOrDefault(f => f.Id == id);
+			var flight = flights.FirstOrDefault(f => f.Plane.Id == id);
 			if (flight != null)
 			{
 				flight.Reset(WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());

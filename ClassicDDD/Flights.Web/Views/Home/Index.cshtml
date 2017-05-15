@@ -22,8 +22,8 @@
 			var map = new Map();
 			map.Init();
 			var dom = new DomService();
-			var flights = new FlightsCollection(map, dom);
-			flights.DrawFlights();
+			var planes = new PlanesCollection(map, dom);
+			planes.DrawPlanes();
 		}
 		function Map()
 		{
@@ -39,9 +39,9 @@
 						mapTypeId: 'terrain'
 					});
 				},
-				Marker: function (flight) {
-					var coords = new google.maps.LatLng(flight.Lat, flight.Long);
-					flight.marker = new google.maps.Marker({
+				Marker: function (plane) {
+					var coords = new google.maps.LatLng(plane.Lat, plane.Long);
+					plane.marker = new google.maps.Marker({
 						position: coords,
 						map: map,
 						icon: icon
@@ -49,50 +49,50 @@
 				}
 			};
 		}
-		function FlightsCollection(map, dom) {
-			var href = '/api/flights';
+		function PlanesCollection(map, dom) {
+			var href = '/api/planes';
 			var that = this;
 			return {
-				DrawFlights: function () {
+				DrawPlanes: function () {
 					return aja()
-						.url('/api/flights')
+						.url('/api/planes')
 						.on('success', function (data) {
 							for (var i = 0; i < data.length; i++) {
-								var flight = data[0];
-								new map.Marker(flight);
-								flight.UpdatePlanePosition = function () {
+								var plane = data[0];
+								new map.Marker(plane);
+								plane.UpdatePosition = function () {
 									aja()
-										.url('/api/flights/' + flight.Id)
+										.url('/api/planes/' + plane.Id)
 										.on('success', function (data) {
 											var newCoords = new google.maps.LatLng(data.Lat, data.Long);
-											flight.marker.setPosition(newCoords);
-											if (data.IsPlaneFlying) {
-												setTimeout(function () { flight.UpdatePlanePosition(); }, 200);											}
+											plane.marker.setPosition(newCoords);
+											if (data.IsFlying) {
+												setTimeout(function () { plane.UpdatePosition(); }, 200);											}
 										})
 										.go();
 								}
-								flight.Start = function () {
+								plane.Start = function () {
 									return aja()
 										.method('post')
-										.url('/api/flights/' + flight.Id + '/start')
+										.url('/api/planes/startPlane?id=' + plane.Id)
 										.on('success', function (data) {
-											setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+											setTimeout(function () { plane.UpdatePosition(); }, 200);
 										})
 										.go();
 								}
-								flight.Reset = function () {
+								plane.Reset = function () {
 									return aja()
 										.method('post')
-										.url('/api/flights/' + flight.Id + '/reset')
+										.url('/api/planes/resetPlanePosition?id=' + plane.Id)
 										.on('success', function (data) {
-											setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+											setTimeout(function () { plane.UpdatePosition(); }, 200);
 										})
 										.go();
 								}
-								dom.PlugStartBtn(flight);
-								dom.PlugResetBtn(flight);
-								if (flight.IsPlaneFlying) {
-									setTimeout(function () { flight.UpdatePlanePosition(); }, 200);
+								dom.PlugStartBtn(plane);
+								dom.PlugResetBtn(plane);
+								if (plane.IsFlying) {
+									setTimeout(function () { plane.UpdatePosition(); }, 200);
 								}
 							}
 						})
@@ -102,16 +102,16 @@
 		}
 		function DomService() {
 			return {
-				PlugStartBtn: function (flight) {
+				PlugStartBtn: function (plane) {
 					var elem = document.getElementById('startBtn');
 					elem.onclick = function () {
-						flight.Start();
+						plane.Start();
 					}
 				},
-				PlugResetBtn: function (flight) {
+				PlugResetBtn: function (plane) {
 					var elem = document.getElementById('resetBtn');
 					elem.onclick = function () {
-						flight.Reset();
+						plane.Reset();
 					}
 				}
 			};

@@ -15,8 +15,8 @@ namespace Flights.Domain
 		public Airport Departure { get; private set; }
 		public Airport Destination { get; private set; }
 		public Plane Plane { get; private set; }
-		public DateTime? DepartedAt { get; set; }
-		public DateTime? ArrivedAt { get; set; }
+		public DateTime? DepartedAt { get; private set; }
+		public DateTime? ArrivedAt { get; private set; }
 
 		public bool IsPlaneFlying
 		{

@@ -15,24 +15,23 @@ namespace Flights.Web
             config.MapHttpAttributeRoutes();
 
 			config.Routes.MapHttpRoute(
-				name: "Start flights",
-				routeTemplate: "api/{controller}/{id}/start",
+				name: "Start plane",
+				routeTemplate: "api/{controller}/startPlane",
 				defaults: new
 				{
 					id = RouteParameter.Optional,
-					controller = "FlightsController",
-					action = "Start"
+					controller = "PlanesController",
+					action = "StartPlane"
 				}
 			);
 
 			config.Routes.MapHttpRoute(
-				name: "Reset flights",
-				routeTemplate: "api/{controller}/{id}/reset",
+				name: "Reset plane position",
+				routeTemplate: "api/{controller}/resetPlanePosition",
 				defaults: new
 				{
-					id = RouteParameter.Optional,
-					controller = "FlightsController",
-					action = "Reset"
+					controller = "PlanesController",
+					action = "ResetPlanePosition"
 				}
 			);
 
