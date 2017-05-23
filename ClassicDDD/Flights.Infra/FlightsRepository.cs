@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class FlightsRepository : IFlightsRepository
-    {
-        public IEnumerable<Flight> GetFlights()
-        {
-            using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
-            {
+	public class FlightsRepository : IFlightsRepository
+	{
+		public IEnumerable<Flight> GetFlights()
+		{
+			using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
+			{
 				return context.Set<FlightDal>()
 					.Include(f => f.From)
 					.Include(f => f.To)
 					.Include(f => f.Plane)
 					.Include(f => f.Plane.Positions)
 					.ToList()
-                    .Select(f => new Flight(f.Id, AirportsFactory.Build(f.From), AirportsFactory.Build(f.To), PlanesFactory.Build(f.Plane), f.DepartedAt, f.ArrivedAt));
-            }
-        }
+					.Select(f => new Flight(f.Id, AirportsFactory.Build(f.From), AirportsFactory.Build(f.To), PlanesFactory.Build(f.Plane), f.DepartedAt, f.ArrivedAt));
+			}
+		}
 
 		public Flight GetFlightById(Guid id)
 		{

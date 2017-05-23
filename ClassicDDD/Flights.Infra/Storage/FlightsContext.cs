@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class FlightsContext : DbContext
-    {
-        public FlightsContext(string cName) : base(cName) { }
+	public class FlightsContext : DbContext
+	{
+		public FlightsContext(string cName) : base(cName) { }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Configurations.Add(new FlightsMapper());
 			modelBuilder.Configurations.Add(new AirportsMapper());

@@ -39,13 +39,13 @@ namespace Flights.Domain
 			ArrivedAt = arrivedAt;
 		}
 
-        public void Start(IEventDispatcher dispatcher)
-        {
+		public void Start(IEventDispatcher dispatcher)
+		{
 			DepartedAt = DateTime.Now;
 			ArrivedAt = null;
 			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
 
-            Plane.FlyThrough(dispatcher, Destination.Location);
+			Plane.FlyThrough(dispatcher, Destination.Location);
 
 			ArrivedAt = DateTime.Now;
 			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));

@@ -12,9 +12,9 @@ namespace Flights.Infra
 		public static Plane Build(PlaneDal plane)
 		{
 			var lastKnownPosition = plane.Positions.OrderBy(p => p.RecordedAt).LastOrDefault();
-			var location = new Domain.GPSPoint(
-				new Domain.LatCoordinate(lastKnownPosition.Lat),
-				new Domain.LongCoordinate(lastKnownPosition.Long)
+			var location = new GPSPoint(
+				new LatCoordinate(lastKnownPosition.Lat),
+				new LongCoordinate(lastKnownPosition.Long)
 			);
 
 			return new Plane(plane.Id, location);

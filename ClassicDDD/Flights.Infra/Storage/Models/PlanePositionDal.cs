@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Flights.Infra
 {
-    public class PlanePositionDal
+	public class PlanePositionDal
 	{
 		public Guid Id { get; set; }
 		public Guid PlaneId { get; set; }

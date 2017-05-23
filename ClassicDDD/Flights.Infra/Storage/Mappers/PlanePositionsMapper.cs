@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class PlanePositionsMapper : EntityTypeConfiguration<PlanePositionDal>
-    {
-        public PlanePositionsMapper()
-        {
-            ToTable("PlanePositions");
+	public class PlanePositionsMapper : EntityTypeConfiguration<PlanePositionDal>
+	{
+		public PlanePositionsMapper()
+		{
+			ToTable("PlanePositions");
 
 			Property(pp => pp.Id).HasColumnName("Id");
 		}

@@ -5,8 +5,8 @@ using System.Threading;
 
 namespace Flights.Infra
 {
-    public class PlaneDal
-    {
+	public class PlaneDal
+	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
 		public ICollection<PlanePositionDal> Positions { get; set; }

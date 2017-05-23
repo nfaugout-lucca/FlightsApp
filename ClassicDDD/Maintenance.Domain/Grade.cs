@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Domain
 {
-    public enum Grade
-    {
-        Business = 0,
-        First,
-        Second
-    }
+ public enum Grade
+ {
+  Business = 0,
+  First,
+  Second
+ }
 }

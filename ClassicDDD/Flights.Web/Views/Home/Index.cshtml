@@ -1,23 +1,23 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <style>
-         /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
-         #map {
-             height: 100%;
-         }
-         /* Optional: Makes the sample page fill the window. */
-         html, body {
-             height: 100%;
-             margin: 0;
-             padding: 0;
-         }
-    </style>
+	<style>
+		 /* Always set the map height explicitly to define the size of the div
+		* element that contains the map. */
+		 #map {
+			 height: 100%;
+		 }
+		 /* Optional: Makes the sample page fill the window. */
+		 html, body {
+			 height: 100%;
+			 margin: 0;
+			 padding: 0;
+		 }
+	</style>
 </head>
 <body>
-    <div id="map"></div>
-    <script>
+	<div id="map"></div>
+	<script>
 		function Init() {
 			var map = new Map();
 			map.Init();
@@ -67,7 +67,7 @@
 											var newCoords = new google.maps.LatLng(data.Lat, data.Long);
 											plane.marker.setPosition(newCoords);
 											if (data.IsFlying) {
-												setTimeout(function () { plane.UpdatePosition(); }, 200);											}
+												setTimeout(function () { plane.UpdatePosition(); }, 100);											}
 										})
 										.go();
 								}
@@ -116,7 +116,7 @@
 				}
 			};
 		}
-    </script>
+	</script>
 	<script src="../../Scripts/aja.min.js">
 	</script>
 	<script src="../../Scripts/bonzo.min.js">

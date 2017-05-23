@@ -9,6 +9,7 @@ namespace Flights.Domain.Events
 	public class EventDispatcher : IEventDispatcher
 	{
 		private Dictionary<string, List<Action<Event>>> _callbacks;
+		private object locker = new object();
 
 		public EventDispatcher()
 		{
@@ -31,9 +32,12 @@ namespace Flights.Domain.Events
 			//If any listener
 			if (_callbacks.ContainsKey(@event.Type))
 			{
-				foreach(var callback in _callbacks[@event.Type])
+				lock (locker)
 				{
-					callback(@event);
+					foreach (var callback in _callbacks[@event.Type])
+					{
+						callback(@event);
+					}
 				}
 			}
 		}

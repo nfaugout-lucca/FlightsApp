@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Flights.Domain
 {
-    public abstract class Entity
-    {
-        public virtual Guid Id { get; protected set; }
-        public virtual string Name { get; protected set; }
-    }
+	public abstract class Entity
+	{
+		public virtual Guid Id { get; protected set; }
+		public virtual string Name { get; protected set; }
+	}
 }

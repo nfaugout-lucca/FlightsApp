@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Flights.Domain
 {
-    public class Airport : Entity
-    {
-        public GPSPoint Location { get; private set; }
+	public class Airport : Entity
+	{
+		public GPSPoint Location { get; private set; }
 
-        public Airport(string name, GPSPoint location)
-        {
-            Name = name;
-            Location = location;
-        }
-    }
+		public Airport(string name, GPSPoint location)
+		{
+			Name = name;
+			Location = location;
+		}
+	}
 }

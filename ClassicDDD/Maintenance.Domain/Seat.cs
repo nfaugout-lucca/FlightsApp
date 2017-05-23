@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Domain
 {
-    public class Seat
-    {
-        public Grade Grade { get; private set; }
+ public class Seat
+ {
+  public Grade Grade { get; private set; }
 
-        public Seat(Grade grade)
-        {
-            Grade = grade;
-        }
-    }
+  public Seat(Grade grade)
+  {
+   Grade = grade;
+  }
+ }
 }

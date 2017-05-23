@@ -10,8 +10,8 @@ using Xunit;
 
 namespace Flighs.Domain.Tests
 {
-    public class PlaneTests
-    {
+ public class PlaneTests
+ {
 		[Fact]
 		public void Plane_Should_FlyTrough_Destination_When_Stopped_And_Started()
 		{

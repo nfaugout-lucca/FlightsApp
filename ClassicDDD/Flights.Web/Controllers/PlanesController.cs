@@ -12,13 +12,13 @@ using System.Web.Http;
 
 namespace Flights.Web.Controllers
 {
-    public class PlanesController : ApiController
-    {
-        // GET api/planes
-        public IEnumerable<PlaneDto> Get()
-        {
-            var repo = new FlightsRepository();
-            var flights = repo.GetFlights();
+	public class PlanesController : ApiController
+	{
+		// GET api/planes
+		public IEnumerable<PlaneDto> Get()
+		{
+			var repo = new FlightsRepository();
+			var flights = repo.GetFlights();
 
 			return flights
 				.Select(f => new PlaneDto
@@ -28,7 +28,7 @@ namespace Flights.Web.Controllers
 					Lat = f.Plane.CurrentLocation.LatCoordinate.Value,
 					Long = f.Plane.CurrentLocation.LongCoordinate.Value,
 				});
-        }
+		}
 
 		// GET api/planes/{id}
 		public PlaneDto Get(Guid id)
@@ -48,7 +48,7 @@ namespace Flights.Web.Controllers
 		// POST api/planes/startPlane
 		[HttpPost]
 		public void StartPlane(Guid id)
-        {
+		{
 			var repo = new FlightsRepository();
 			var flights = repo.GetFlights();
 

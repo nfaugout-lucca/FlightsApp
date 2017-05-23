@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class PlanePositionsRepository
+	public class PlanePositionsRepository
 	{
 		public void ProcessEvent(Event @event)
 		{

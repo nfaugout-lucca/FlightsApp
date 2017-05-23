@@ -17,24 +17,24 @@ using System.Web.Routing;
 
 namespace Flights.Web
 {
-    public class WebApiApplication : System.Web.HttpApplication
-    {
+	public class WebApiApplication : System.Web.HttpApplication
+	{
 		public static Container DIContainer = new Container();
 
 		protected void Application_Start()
-        {
-            HttpConfiguration config = GlobalConfiguration.Configuration;
-            config.Formatters.Clear();
-            config.Formatters.Add(new JsonMediaTypeFormatter());
+		{
+			HttpConfiguration config = GlobalConfiguration.Configuration;
+			config.Formatters.Clear();
+			config.Formatters.Add(new JsonMediaTypeFormatter());
 
-            AreaRegistration.RegisterAllAreas();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+			AreaRegistration.RegisterAllAreas();
+			GlobalConfiguration.Configure(WebApiConfig.Register);
+			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-			DIContainer.Register<IEventDispatcher>(() => new EventDispatcher(), Lifestyle.Singleton);
+			var dispatcher = new EventDispatcher();
+			DIContainer.Register<IEventDispatcher>(() => dispatcher);
 
-			var dispatcher = DIContainer.GetInstance<IEventDispatcher>();
 			dispatcher.RegisterListener(Plane.EVENT_LOCATION_CHANGED, new PlanePositionsRepository().ProcessEvent);
 			dispatcher.RegisterListener(Flight.EVENT_FLIGHT_CHANGED, new FlightsRepository().ProcessEvent);
 		}

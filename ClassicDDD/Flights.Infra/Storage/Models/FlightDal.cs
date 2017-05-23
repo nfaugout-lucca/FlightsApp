@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class FlightDal
-    {
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
+	public class FlightDal
+	{
+		public Guid Id { get; set; }
+		public DateTime CreatedAt { get; set; }
 		public Guid FromId { get; set; }
 		public AirportDal From { get; set; }
 		public Guid ToId { get; set; }

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-    public class PlanesMapper : EntityTypeConfiguration<PlaneDal>
-    {
-        public PlanesMapper()
-        {
-            ToTable("Planes");
+	public class PlanesMapper : EntityTypeConfiguration<PlaneDal>
+	{
+		public PlanesMapper()
+		{
+			ToTable("Planes");
 
-            Property(p => p.Id).HasColumnName("Id");
-			HasMany<PlanePositionDal>(p => p.Positions).WithRequired().HasForeignKey(pp => pp.PlaneId);
-        }
-    }
+			Property(p => p.Id).HasColumnName("Id");
+					HasMany<PlanePositionDal>(p => p.Positions).WithRequired().HasForeignKey(pp => pp.PlaneId);
+		}
+	}
 }
