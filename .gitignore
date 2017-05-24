@@ -1,0 +1,16 @@
+﻿*.vsp
+*.psess
+*.suo
+*.pdb
+*.csproj.user
+*.sqlproj.user
+*.trx
+*.dbmdl
+*.orig
+*.refactorlog
+
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+[Oo]bj/
+[Bb]in/
+packages/
+/ClassicDDD/.vs/config

@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		 /* Always set the map height explicitly to define the size of the div
+		* element that contains the map. */
+		 #map {
+			 height: 100%;
+		 }
+		 /* Optional: Makes the sample page fill the window. */
+		 html, body {
+			 height: 100%;
+			 margin: 0;
+			 padding: 0;
+		 }
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		function Init() {
+			var map = new Map();
+			map.Init();
+			var dom = new DomService();
+			var planes = new PlanesCollection(map, dom);
+			planes.DrawPlanes();
+		}
+		function Map()
+		{
+			var map;
+			var icon = new google.maps.MarkerImage(
+				"http://labs.lucca.fr/nfaugout/ico-plane.png",
+			);
+			return {
+				Init: function () {
+					map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 7,
+						center: new google.maps.LatLng(48.3, 2),
+						mapTypeId: 'terrain'
+					});
+				},
+				Marker: function (plane) {
+					var coords = new google.maps.LatLng(plane.Lat, plane.Long);
+					plane.marker = new google.maps.Marker({
+						position: coords,
+						map: map,
+						icon: icon
+					});
+				}
+			};
+		}
+		function PlanesCollection(map, dom) {
+			var href = '/api/planes';
+			var that = this;
+			return {
+				DrawPlanes: function () {
+					return aja()
+						.url('/api/planes')
+						.on('success', function (data) {
+							for (var i = 0; i < data.length; i++) {
+								var plane = data[0];
+								new map.Marker(plane);
+								plane.UpdatePosition = function () {
+									aja()
+										.url('/api/planes/' + plane.Id)
+										.on('success', function (data) {
+											var newCoords = new google.maps.LatLng(data.Lat, data.Long);
+											plane.marker.setPosition(newCoords);
+											if (data.IsFlying) {
+												setTimeout(function () { plane.UpdatePosition(); }, 100);											}
+										})
+										.go();
+								}
+								plane.Start = function () {
+									return aja()
+										.method('post')
+										.url('/api/planes/startPlane?id=' + plane.Id)
+										.on('success', function (data) {
+											setTimeout(function () { plane.UpdatePosition(); }, 200);
+										})
+										.go();
+								}
+								plane.Reset = function () {
+									return aja()
+										.method('post')
+										.url('/api/planes/resetPlanePosition?id=' + plane.Id)
+										.on('success', function (data) {
+											setTimeout(function () { plane.UpdatePosition(); }, 200);
+										})
+										.go();
+								}
+								dom.PlugStartBtn(plane);
+								dom.PlugResetBtn(plane);
+								if (plane.IsFlying) {
+									setTimeout(function () { plane.UpdatePosition(); }, 200);
+								}
+							}
+						})
+						.go();
+				}
+			};
+		}
+		function DomService() {
+			return {
+				PlugStartBtn: function (plane) {
+					var elem = document.getElementById('startBtn');
+					elem.onclick = function () {
+						plane.Start();
+					}
+				},
+				PlugResetBtn: function (plane) {
+					var elem = document.getElementById('resetBtn');
+					elem.onclick = function () {
+						plane.Reset();
+					}
+				}
+			};
+		}
+	</script>
+	<script src="../../Scripts/aja.min.js">
+	</script>
+	<script src="../../Scripts/bonzo.min.js">
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6jYlPHJVDuHFSgQgznl8v6GZEtx6jLLo&callback=Init">
+	</script>
+	<div style="position: absolute; left: 10px; top: 50px;">
+		<input type="button" value="Start flight" id="startBtn" />
+		<input type="button" value="Reset flight" id="resetBtn" />
+	</div>
+</body>
+</html>
