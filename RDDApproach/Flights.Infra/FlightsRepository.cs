@@ -1,5 +1,6 @@
 ﻿using Flights.Domain;
 using Flights.Domain.Events;
+using Flights.Domain.Models;
 using RDD.Infra.Services;
 using System;
 using System.Collections.Generic;
@@ -28,19 +29,35 @@ namespace Flights.Infra
 		{
 			switch(@event.Type)
 			{
-				case Flight.EVENT_FLIGHT_CHANGED:
+				case Travel.EVENT_TRAVEL_CREATED:
 					{
-						FlightChanged((Flight)@event.Subject);
+						TravelCreated((Travel)@event.Subject);
+						break;
+					}
+
+				case FlightReset.EVENT_RESET_CREATED:
+					{
+						ResetCreated((FlightReset)@event.Subject);
 						break;
 					}
 			}
 		}
 
-		private void FlightChanged(Flight flight)
+		private void TravelCreated(Travel travel)
 		{
 			using (var context = new FlightsContext())
 			{
-				context.Entry(flight).State = EntityState.Modified;
+				context.Entry(travel.Flight).State = EntityState.Modified;
+
+				context.SaveChanges();
+			}
+		}
+
+		private void ResetCreated(FlightReset reset)
+		{
+			using (var context = new FlightsContext())
+			{
+				context.Entry(reset.Flight).State = EntityState.Modified;
 
 				context.SaveChanges();
 			}

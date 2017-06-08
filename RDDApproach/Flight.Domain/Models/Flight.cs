@@ -8,12 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flights.Domain
+namespace Flights.Domain.Models
 {
 	public class Flight : Entity
 	{
-		public const string EVENT_FLIGHT_CHANGED = "Flight.Changed";
-
 		public override string Name
 		{
 			get
@@ -31,13 +29,7 @@ namespace Flights.Domain
 		public DateTime? DepartedAt { get; internal set; }
 		public DateTime? ArrivedAt { get; internal set; }
 
-		public bool IsPlaneFlying
-		{
-			get
-			{
-				return DepartedAt.HasValue && !ArrivedAt.HasValue;
-			}
-		}
+		public bool IsPlaneFlying => DepartedAt.HasValue && !ArrivedAt.HasValue;
 
 		private Flight() { }
 
@@ -54,23 +46,9 @@ namespace Flights.Domain
 			ArrivedAt = arrivedAt;
 		}
 
-		public void Start(IEventDispatcher dispatcher)
-		{
-			DepartedAt = DateTime.Now;
-			ArrivedAt = null;
-			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
-
-			Plane.FlyThrough(dispatcher, Destination.Location);
-
-			ArrivedAt = DateTime.Now;
-			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
-		}
-
 		public void Reset(IEventDispatcher dispatcher)
 		{
-			DepartedAt = null;
-			ArrivedAt = null;
-			dispatcher.RaiseEvent(new Event(EVENT_FLIGHT_CHANGED, this));
+			new FlightReset(this, dispatcher);
 
 			Plane.ResetLocation(dispatcher, Departure.Location);
 		}

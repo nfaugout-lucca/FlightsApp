@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flights.Domain
+namespace Flights.Domain.Models
 {
     public abstract class Entity : IPrimaryKey
     {

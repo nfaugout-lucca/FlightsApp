@@ -1,5 +1,6 @@
 ﻿using Flights.Domain;
 using Flights.Domain.Collections;
+using Flights.Domain.Models;
 using Moq;
 using RDD.Infra.Services;
 using SimpleInjector;
@@ -21,12 +22,13 @@ namespace Flighs.Domain.Tests
 
 			var airPort1 = new Airport("One", new GPSPoint(new LatCoordinate(48), new LongCoordinate(1)));
 			var airPort2 = new Airport("Two", new GPSPoint(new LatCoordinate(48), new LongCoordinate(10)));
-			var plane = new Plane(Guid.NewGuid(), airPort1.Location);
+			var plane = new Plane(Guid.NewGuid());
+			plane.Positions.Add(new PlanePosition(plane, airPort1.Location));
 			var flight = new Flight(airPort1, airPort2, plane, null, null);
 
 			Assert.False(flight.IsPlaneFlying);
 
-			flight.Start(dispatcher);
+			new Travel(flight, dispatcher);
 
 			Assert.False(flight.IsPlaneFlying);
 		}

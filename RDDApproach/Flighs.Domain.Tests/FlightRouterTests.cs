@@ -1,4 +1,5 @@
 ﻿using Flights.Domain;
+using Flights.Domain.Models;
 using Moq;
 using SimpleInjector;
 using System;

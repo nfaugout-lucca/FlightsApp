@@ -68,6 +68,8 @@
     <Compile Include="Helpers\FlightRouter.cs" />
     <Compile Include="IEventDispatcher.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Models\FlightReset.cs" />
+    <Compile Include="Models\Travel.cs" />
     <Compile Include="Models\Plane.cs" />
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\Entity.cs" />

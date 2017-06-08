@@ -1,5 +1,6 @@
 ﻿using Flights.Domain;
 using Flights.Domain.Collections;
+using Flights.Domain.Models;
 using Flights.Infra;
 using RDD.Domain;
 using RDD.Infra.Services;
@@ -36,13 +37,13 @@ namespace Flights.Web.Controllers
 			return flight;
 		}
 
-		// POST api/flights/{id}/start
+		// POST api/flights/{id}/travel
 		[HttpPost]
         public void Start(Guid id)
         {
 			var repo = new FlightsRepository();
 			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
-			collection.StartFlightById(id);
+			collection.CreateTravel(id);
 		}
 
 		// POST api/flights/{id}/reset
@@ -51,7 +52,7 @@ namespace Flights.Web.Controllers
 		{
 			var repo = new FlightsRepository();
 			var collection = new FlightsCollection(repo, WebApiApplication.DIContainer.GetInstance<IEventDispatcher>());
-			collection.ResetFlightById(id);
+			collection.CreateReset(id);
 		}
 	}
 }

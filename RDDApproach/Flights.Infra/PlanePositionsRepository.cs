@@ -1,5 +1,6 @@
 ﻿using Flights.Domain;
 using Flights.Domain.Events;
+using Flights.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace Flights.Infra
 		{
 			switch(@event.Type)
 			{
-				case Plane.EVENT_LOCATION_CHANGED:
+				case PlanePosition.EVENT_POSITION_CREATED:
 					{
 						var position = (PlanePosition)@event.Subject;
 

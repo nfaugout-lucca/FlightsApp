@@ -1,4 +1,5 @@
 ﻿using Flights.Domain;
+using Flights.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;

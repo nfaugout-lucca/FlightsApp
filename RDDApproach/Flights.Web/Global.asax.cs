@@ -1,5 +1,6 @@
 ﻿using Flights.Domain;
 using Flights.Domain.Events;
+using Flights.Domain.Models;
 using Flights.Infra;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -37,8 +38,8 @@ namespace Flights.Web
 			DIContainer.Register<IEventDispatcher>(() => new EventDispatcher(), Lifestyle.Singleton);
 
 			var dispatcher = DIContainer.GetInstance<IEventDispatcher>();
-			dispatcher.RegisterListener(Plane.EVENT_LOCATION_CHANGED, new PlanePositionsRepository().ProcessEvent);
-			dispatcher.RegisterListener(Flight.EVENT_FLIGHT_CHANGED, new FlightsRepository().ProcessEvent);
+			dispatcher.RegisterListener(PlanePosition.EVENT_POSITION_CREATED, new PlanePositionsRepository().ProcessEvent);
+			dispatcher.RegisterListener(Travel.EVENT_TRAVEL_CREATED, new FlightsRepository().ProcessEvent);
 		}
 	}
 }
