@@ -15,31 +15,31 @@ namespace Flights.Web.Controllers
 	public class PlanesController : ApiController
 	{
 		// GET api/planes
-		public IEnumerable<PlaneDto> Get()
+		public IEnumerable<PlaneWeb> Get()
 		{
 			var repo = new FlightsRepository();
 			var flights = repo.GetFlights();
 
 			return flights
-				.Select(f => new PlaneDto
+				.Select(f => new PlaneWeb
 				{
 					Id = f.Plane.Id,
-					IsFlying = f.IsPlaneFlying,
+					IsFlying = f.DepartedAt.HasValue && !f.ArrivedAt.HasValue,
 					Lat = f.Plane.CurrentLocation.LatCoordinate.Value,
 					Long = f.Plane.CurrentLocation.LongCoordinate.Value,
 				});
 		}
 
 		// GET api/planes/{id}
-		public PlaneDto Get(Guid id)
+		public PlaneWeb Get(Guid id)
 		{
 			var repo = new FlightsRepository();
 			var flight = repo.GetFlights().FirstOrDefault(f => f.Plane.Id == id);
 
-			return new PlaneDto
+			return new PlaneWeb
 			{
 				Id = flight.Plane.Id,
-				IsFlying = flight.IsPlaneFlying,
+				IsFlying = flight.DepartedAt.HasValue && !flight.ArrivedAt.HasValue,
 				Lat = flight.Plane.CurrentLocation.LatCoordinate.Value,
 				Long = flight.Plane.CurrentLocation.LongCoordinate.Value,
 			};

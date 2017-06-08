@@ -24,19 +24,12 @@ namespace Flights.Domain
 		{
 			var router = new FlightRouter(CurrentLocation, destination, SPEED);
 
-			for (var i=0; i < 1000; i++)
+			while (!router.CurrentLocation.Equals(CurrentLocation))
 			{
 				CurrentLocation = router.CurrentLocation;
 				dispatcher.RaiseEvent(new Event(EVENT_LOCATION_CHANGED, this));
 
 				Thread.Sleep(SLEEP_INTERVAL);
-
-				//After sleep router is still at the same location ?
-				//If so, means that the fly is over
-				if (router.CurrentLocation.Equals(CurrentLocation))
-				{
-					break;
-				}
 			}
 		}
 

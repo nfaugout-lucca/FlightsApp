@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-	public class PlanePositionsMapper : EntityTypeConfiguration<PlanePositionDal>
+	public class PlanePositionsMapper : EntityTypeConfiguration<PlanePositionData>
 	{
 		public PlanePositionsMapper()
 		{

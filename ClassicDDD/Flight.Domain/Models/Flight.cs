@@ -18,14 +18,6 @@ namespace Flights.Domain
 		public DateTime? DepartedAt { get; private set; }
 		public DateTime? ArrivedAt { get; private set; }
 
-		public bool IsPlaneFlying
-		{
-			get
-			{
-				return DepartedAt.HasValue && !ArrivedAt.HasValue;
-			}
-		}
-
 		public Flight(Airport departure, Airport destination, Plane plane, DateTime? departedAt, DateTime? arrivedAt)
 			: this(Guid.NewGuid(), departure, destination, plane, departedAt, arrivedAt) { }
 

@@ -9,7 +9,7 @@ namespace Flights.Infra
 {
 	public class AirportsFactory
 	{
-		public static Airport Build(AirportDal airport)
+		public static Airport Build(AirportData airport)
 		{
 			var location = new GPSPoint(
 				new LatCoordinate(airport.Lat),

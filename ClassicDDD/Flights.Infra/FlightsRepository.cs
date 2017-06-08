@@ -15,7 +15,7 @@ namespace Flights.Infra
 		{
 			using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
 			{
-				return context.Set<FlightDal>()
+				return context.Set<FlightData>()
 					.Include(f => f.From)
 					.Include(f => f.To)
 					.Include(f => f.Plane)
@@ -29,7 +29,7 @@ namespace Flights.Infra
 		{
 			using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
 			{
-				var flightDal = context.Set<FlightDal>()
+				var flightDal = context.Set<FlightData>()
 					.Include(f => f.From)
 					.Include(f => f.To)
 					.Include(f => f.Plane)
@@ -56,7 +56,7 @@ namespace Flights.Infra
 		{
 			using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
 			{
-				var flightDal = context.Set<FlightDal>()
+				var flightDal = context.Set<FlightData>()
 					.FirstOrDefault(f => f.Id == flight.Id);
 
 				flightDal.DepartedAt = flight.DepartedAt;

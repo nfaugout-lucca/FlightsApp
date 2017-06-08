@@ -74,10 +74,10 @@
     <Compile Include="Storage\Mappers\PlanesMapper.cs" />
     <Compile Include="Storage\Mappers\FlightsMapper.cs" />
     <Compile Include="FlightsRepository.cs" />
-    <Compile Include="Storage\Models\AirportDal.cs" />
-    <Compile Include="Storage\Models\FlightDal.cs" />
-    <Compile Include="Storage\Models\PlanePositionDal.cs" />
-    <Compile Include="Storage\Models\PlaneDal.cs" />
+    <Compile Include="Storage\Models\AirportData.cs" />
+    <Compile Include="Storage\Models\FlightData.cs" />
+    <Compile Include="Storage\Models\PlanePositionData.cs" />
+    <Compile Include="Storage\Models\PlaneData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

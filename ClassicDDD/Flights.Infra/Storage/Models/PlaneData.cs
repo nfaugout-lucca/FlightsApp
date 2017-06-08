@@ -5,15 +5,15 @@ using System.Threading;
 
 namespace Flights.Infra
 {
-	public class PlaneDal
+	public class PlaneData
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
-		public ICollection<PlanePositionDal> Positions { get; set; }
+		public ICollection<PlanePositionData> Positions { get; set; }
 
-		public PlaneDal()
+		public PlaneData()
 		{
-			Positions = new HashSet<PlanePositionDal>();
+			Positions = new HashSet<PlanePositionData>();
 		}
 	}
 }

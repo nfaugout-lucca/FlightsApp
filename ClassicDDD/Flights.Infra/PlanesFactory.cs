@@ -9,7 +9,7 @@ namespace Flights.Infra
 {
 	public class PlanesFactory
 	{
-		public static Plane Build(PlaneDal plane)
+		public static Plane Build(PlaneData plane)
 		{
 			var lastKnownPosition = plane.Positions.OrderBy(p => p.RecordedAt).LastOrDefault();
 			var location = new GPSPoint(

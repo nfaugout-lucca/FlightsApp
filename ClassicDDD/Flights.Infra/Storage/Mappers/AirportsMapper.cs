@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Flights.Infra
 {
-	public class AirportsMapper : EntityTypeConfiguration<AirportDal>
+	public class AirportsMapper : EntityTypeConfiguration<AirportData>
 	{
 		public AirportsMapper()
 		{

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Flights.Web.Models
+namespace Flights.Infra
 {
-	public class PlaneDto
+	public class AirportData
 	{
 		public Guid Id { get; set; }
+		public string Name { get; set; }
 		public decimal Lat { get; set; }
 		public decimal Long { get; set; }
-		public bool IsFlying { get; set; }
 	}
 }

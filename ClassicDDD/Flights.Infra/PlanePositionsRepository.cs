@@ -32,7 +32,7 @@ namespace Flights.Infra
 		{
 			using (var context = new FlightsContext("data source=localhost;initial catalog=FLIGHTS;integrated security=False;User id=flights;Password=flights;multipleactiveresultsets=True;App=EntityFramework&quot;"))
 			{
-				var planePositionDal = new PlanePositionDal()
+				var planePositionDal = new PlanePositionData()
 				{
 					Id = Guid.NewGuid(),
 					Lat = position.LatCoordinate.Value,
@@ -41,7 +41,7 @@ namespace Flights.Infra
 					RecordedAt = DateTime.Now
 				};
 
-				context.Set<PlanePositionDal>()
+				context.Set<PlanePositionData>()
 					.Add(planePositionDal);
 
 				context.SaveChanges();

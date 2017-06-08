@@ -22,11 +22,11 @@ namespace Flighs.Domain.Tests
 			var plane = new Plane(Guid.NewGuid(), airPort1.Location);
 			var flight = new Flight(airPort1, airPort2, plane, null, null);
 
-			Assert.False(flight.IsPlaneFlying);
+			Assert.False(flight.DepartedAt.HasValue);
 
 			flight.Start(dispatcher);
 
-			Assert.False(flight.IsPlaneFlying);
+			Assert.True(flight.ArrivedAt.HasValue);
 		}
 	}
 }
